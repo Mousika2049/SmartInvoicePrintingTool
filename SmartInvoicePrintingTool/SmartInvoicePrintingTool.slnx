@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SmartInvoicePrintingTool.App/SmartInvoicePrintingTool.App.csproj" />
+  </Folder>
+</Solution>
