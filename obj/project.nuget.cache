@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DpzE4BBtuYo=",
+  "dgSpecHash": "fJ731Iskicc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kvm\\Desktop\\2\\SmartInvoicePrintingTool\\SmartInvoicePrintingTool.csproj",
+  "projectFilePath": "C:\\Users\\kvm\\Desktop\\SmartInvoicePrintingTool\\SmartInvoicePrintingTool.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kvm\\.nuget\\packages\\avalonia\\12.0.4\\avalonia.12.0.4.nupkg.sha512",
     "C:\\Users\\kvm\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.27548.20260419\\avalonia.angle.windows.natives.2.1.27548.20260419.nupkg.sha512",

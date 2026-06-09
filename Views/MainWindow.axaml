@@ -4,60 +4,106 @@
         x:Class="SmartInvoicePrintingTool.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Smart Invoice Printing Tool"
-        Width="600" Height="550"
+        Width="750" Height="600"
+        Background="{DynamicResource SystemFillColorSecondaryBackgroundBrush}"
         WindowStartupLocation="CenterScreen">
-    
+
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Grid Margin="20,10" RowDefinitions="Auto,Auto,Auto,*,Auto">
+    <!-- 定义一些图标资源 -->
+    <Window.Styles>
+        <Style Selector="Button.command-btn">
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="15,8" />
+        </Style>
+    </Window.Styles>
+
+    <Border Margin="20" Padding="20" CornerRadius="12" 
+            Background="{DynamicResource SystemFillColorSurfaceBrush}"
+            BoxShadow="0 4 10 0 #20000000">
         
-        <!-- 标题 -->
-        <TextBlock Grid.Row="0" Text="智能票据合并打印工具" FontWeight="Bold" FontSize="20" Margin="0,0,0,15" />
-
-        <!-- 源文件夹 -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5">
-            <TextBlock Text="源 PDF 目录：" VerticalAlignment="Center" Width="90" />
-            <TextBox Text="{Binding SourcePath}" IsReadOnly="True" HorizontalAlignment="Stretch" Margin="0,0,10,0" />
-            <Button Content="选择..." Command="{Binding BrowseSourceCommand}" Width="60" />
-        </StackPanel>
-
-        <!-- 输出文件夹 -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,5">
-            <TextBlock Text="输出 PDF 目录：" VerticalAlignment="Center" Width="90" />
-            <TextBox Text="{Binding OutputPath}" IsReadOnly="True" HorizontalAlignment="Stretch" Margin="0,0,10,0" />
-            <Button Content="选择..." Command="{Binding BrowseOutputCommand}" Width="60" />
-        </StackPanel>
-
-        <!-- 打印机与操作按钮 -->
-        <StackPanel Grid.Row="3" Margin="0,10">
-            <!-- 打印机选择 -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="目标打印机：" VerticalAlignment="Center" Width="90" />
-                <ComboBox ItemsSource="{Binding Printers}" 
-                         SelectedItem="{Binding SelectedPrinter}"
-                         HorizontalAlignment="Stretch" />
+        <StackPanel Spacing="20">
+            
+            <!-- 1. 标题区 -->
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="🖨️" FontSize="32" VerticalAlignment="Center" />
+                <StackPanel>
+                    <TextBlock Text="Smart Invoice Printing Tool" FontWeight="SemiBold" FontSize="20" />
+                    <TextBlock Text="基于 Avalonia Fluent UI 设计" Foreground="{DynamicResource SystemControlDisabledForegroundBrush}" FontSize="12" />
+                </StackPanel>
             </StackPanel>
 
-            <!-- 进度条与状态 -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
-                <Button Content="▶ 开始处理" 
-                        Command="{Binding StartProcessingCommand}" 
-                        IsEnabled="{Binding !IsBusy}" 
-                        Margin="10,0,0,0" Width="100" />
-                <Button Content="⏹ 停止" Command="{Binding StopProcessingCommand}" IsEnabled="{Binding IsCancellable}" Margin="10,0" Width="80" />
+            <Separator />
+
+            <!-- 2. 路径选择区 (卡片风格) -->
+            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto" RowSpacing="10" ColumnSpacing="10">
+                <!-- 源路径 -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="📂" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBox Text="{Binding SourcePath}" PlaceholderText="点击右侧按钮选择源文件夹" IsReadOnly="True" VerticalAlignment="Center" Width="400" />
+                </StackPanel>
+                <Button Grid.Row="0" Grid.Column="1" Content="浏览源目录" Command="{Binding BrowseSourceCommand}" 
+                        Classes="command-btn" HorizontalAlignment="Right" />
+
+                <!-- 输出路径 -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="📥" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBox Text="{Binding OutputPath}" PlaceholderText="点击右侧按钮选择输出目录" IsReadOnly="True" VerticalAlignment="Center" Width="400" />
+                </StackPanel>
+                <Button Grid.Row="1" Grid.Column="1" Content="浏览输出目录" Command="{Binding BrowseOutputCommand}" 
+                        Classes="command-btn" HorizontalAlignment="Right" />
+            </Grid>
+
+            <!-- 3. 打印机与操作区 -->
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel Spacing="5">
+                    <TextBlock Text="选择打印机" FontWeight="SemiBold" Margin="0,0,0,5" />
+                    <ComboBox ItemsSource="{Binding Printers}" 
+                              SelectedItem="{Binding SelectedPrinter}"
+                              PlaceholderText="选择目标打印机" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="10">
+                    <Button Content="▶ 开始合并并打印" 
+                            Command="{Binding StartProcessingCommand}" 
+                            IsEnabled="{Binding !IsBusy}"
+                            Classes="command-btn" 
+                            HorizontalAlignment="Stretch" />
+                    
+                    <Button Content="⏹ 强制停止" 
+                            Command="{Binding StopProcessingCommand}" 
+                            IsEnabled="{Binding IsCancellable}"
+                            Theme="{StaticResource FlatButtonTheme}"
+                            Foreground="Red"
+                            HorizontalAlignment="Stretch" />
+                </StackPanel>
+            </Grid>
+
+            <!-- 4. 进度与状态 -->
+            <StackPanel Spacing="5">
+                <Grid ColumnDefinitions="*, Auto">
+                    <ProgressBar Value="{Binding ProgressValue}" Height="8" CornerRadius="4" />
+                    <TextBlock Grid.Column="1" Text="{Binding StatusMessage}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{DynamicResource SystemControlForegroundBrush}" />
+                </Grid>
             </StackPanel>
-            
-            <ProgressBar Value="{Binding ProgressValue}" Height="20" Margin="0,5" />
-            
-            <!-- 日志显示区 -->
-            <TextBlock Text="处理日志:" FontWeight="Bold" Margin="0,20,0,5" />
-            <ScrollViewer Height="200" VerticalScrollBarVisibility="Auto">
-                <TextBox Text="{Binding LogContent}" IsReadOnly="True" AcceptsReturn="True" 
-                        FontFamily="Consolas" TextWrapping="Wrap" Background="#F5F5F5" />
-            </ScrollViewer>
+
+            <!-- 5. 实时日志 -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="运行日志" FontWeight="SemiBold" />
+                <TextBox Text="{Binding LogContent}" 
+                         IsReadOnly="True" 
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         Height="150"
+                         CornerRadius="8"
+                         Padding="10"
+                         Background="#101010"
+                         Foreground="#00FF00"
+                         FontFamily="Consolas"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+            </StackPanel>
         </StackPanel>
-    </Grid>
+    </Border>
 </Window>

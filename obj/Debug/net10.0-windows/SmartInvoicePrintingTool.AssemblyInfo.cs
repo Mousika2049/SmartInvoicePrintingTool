@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartInvoicePrintingTool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9324e8953d8f677f9e01d0107c73492f03b3a74")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+539a771a05e0a90e73f64ec108023940aa0cef2e")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartInvoicePrintingTool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartInvoicePrintingTool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
