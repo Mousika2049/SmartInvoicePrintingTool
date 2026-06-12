@@ -44,18 +44,6 @@ MVVM 架构         - 清晰的代码架构
 选择文件夹 → 扫描PDF文件 → 智能匹配 → 最佳缩放计算 → PDF合并 → 批量打印
 ```
 
-### 命令行使用
-```bash
-# 基本用法
-SmartInvoicePrintingTool.exe --source "C:\Invoices" --output "C:\Merged"
-
-# 指定打印机
-SmartInvoicePrintingTool.exe --source "C:\Invoices" --printer "HP LaserJet"
-
-# 批量处理所有子文件夹
-SmartInvoicePrintingTool.exe --source "C:\Invoices" --recursive
-```
-
 ### 支持的发票格式
 - 标准 PDF 发票文件
 - 各种尺寸的 PDF 文档
